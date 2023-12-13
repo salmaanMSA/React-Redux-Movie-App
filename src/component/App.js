@@ -7,7 +7,7 @@ import { addMovies, showFavourite } from  '../actions';
 class App extends React.Component {
   componentDidMount () {
     const {store} = this.props;
-    console.log(store.getState());
+    console.log("Before Mount:", store.getState());
     store.subscribe(() => {
       console.log("updated..!", store.getState());
       this.forceUpdate();
@@ -16,8 +16,8 @@ class App extends React.Component {
   }
 
   isMovieFavourite = (movie) => {
-    const { favourites } = this.props.store.getState();
-    const index = favourites.indexOf(movie);
+    const { movies } = this.props.store.getState();
+    const index = movies.favourites.indexOf(movie);
     if (index !== -1){
       return true;
     }
@@ -29,8 +29,10 @@ class App extends React.Component {
   }
 
   render() {
-    const { movie_list, favourites, showFavourites } = this.props.store.getState();
-    const movies = showFavourites ? favourites : movie_list;
+    const { movies } = this.props.store.getState();
+    console.log(this.props.store.getState());
+    const { movie_list, favourites, showFavourites } = movies;
+    const movies_items = showFavourites ? favourites : movie_list;
 
     return (
       <div className="App">
@@ -42,7 +44,7 @@ class App extends React.Component {
           </div>
 
           <div className="list">
-            {movies.map((movie, index) => (
+            {movies_items.map((movie, index) => (
               <MovieCard 
                 movie={movie} 
                 key={`movies-${index}`} 
